@@ -8,16 +8,23 @@ public class UIToDoList : MonoBehaviour {
 	UIToDoItem mToDoItemPrototype;
 	ToDoList mToDoListData = new ToDoList();
 
+	[SerializeField] Transform Content;
+
 	private void Awake()
 	{
 		mToDoItemPrototype = transform.Find("ToDoItemPrototype").GetComponent<UIToDoItem>();
 	}
-	void Start () {
+	void Start ()
+	{
 		var itemList = mToDoListData.ToDoItems;
 		foreach (var item in itemList)
 		{
-			var prefab = Instantiate(mToDoItemPrototype);
+			var go = Instantiate(mToDoItemPrototype);
+			go.transform.parent = Content;
+			go.transform.localScale = new Vector3(1, 1, 1);
+			go.gameObject.SetActive(true);
 
+			go.SetModel(item);
 		}
 	}
 
