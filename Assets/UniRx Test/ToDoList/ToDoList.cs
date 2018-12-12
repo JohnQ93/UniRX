@@ -41,7 +41,7 @@ namespace UniRxLesson
                 Content = new StringReactiveProperty("Happy Birthday To Me"),
                 Completed = new BoolReactiveProperty(false)
             }
-        };
+        }; 
     }
 }
 

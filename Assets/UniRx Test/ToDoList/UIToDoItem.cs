@@ -1,18 +1,25 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UniRxLesson;
+using UniRx;
 
 public class UIToDoItem : MonoBehaviour {
 
     Text mContent;
-    Button mBtnCompleted;
+    Button mBtnComplete;
 
     ToDoItem Model;
 
     void Awake()
     {
         mContent = transform.Find("Content").GetComponent<Text>();
-        mBtnCompleted = transform.Find("BtnCompleted").GetComponent<Button>();
+        mBtnComplete = transform.Find("BtnCompleted").GetComponent<Button>();
+
+        mBtnComplete.OnClickAsObservable()
+                    .Subscribe(_ =>
+                    {
+                        Model.Completed.Value = true;
+                    });
     }
 
     public void SetModel(ToDoItem model)

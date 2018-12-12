@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/UniRx Test/Chapter2/AsyncOperation/ToLoadScene.unity
     guid: 1a170fa8afdca494db15e60db34b0ccc
+  - enabled: 1
+    path: Assets/UniRx Test/ToDoList/Scene.unity
+    guid: dc35115fa2cf10c40ac15d7a9eaaae40
   m_configObjects: {}

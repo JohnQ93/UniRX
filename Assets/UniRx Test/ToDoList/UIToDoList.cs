@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UniRxLesson;
+using UniRx;
 
 public class UIToDoList : MonoBehaviour {
 
@@ -16,20 +17,35 @@ public class UIToDoList : MonoBehaviour {
 	}
 	void Start ()
 	{
-		var itemList = mToDoListData.ToDoItems;
-		foreach (var item in itemList)
-		{
-			var go = Instantiate(mToDoItemPrototype);
-			go.transform.parent = Content;
-			go.transform.localScale = new Vector3(1, 1, 1);
-			go.gameObject.SetActive(true);
+        OnDataChange();
+    }
 
-			go.SetModel(item);
-		}
-	}
+	void OnDataChange()
+    {
+        var child = Content.GetComponentsInChildren<UIToDoItem>();
+        foreach (var item in child)
+        {
+            Destroy(item.gameObject);
+        }
+        var itemList = mToDoListData.ToDoItems;
+        foreach (var item in itemList)
+        {
+            if (!item.Completed.Value)
+            {
+                item.Completed.Subscribe(complete => 
+                {
+                    if (complete)
+                    {
+                        OnDataChange();
+                    }
+                });
+                var go = Instantiate(mToDoItemPrototype);
+                go.transform.parent = Content;
+                go.transform.localScale = new Vector3(1, 1, 1);
+                go.gameObject.SetActive(true);
 
-	// Update is called once per frame
-	void Update () {
-
-	}
+                go.SetModel(item);
+            }
+        }
+    }
 }
