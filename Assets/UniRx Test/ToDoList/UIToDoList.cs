@@ -1,26 +1,47 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine.UI;
 using UnityEngine;
 using UniRxLesson;
 using UniRx;
 
 public class UIToDoList : MonoBehaviour {
 
-	UIToDoItem mToDoItemPrototype;
-	ToDoList mToDoListData = new ToDoList();
+    UIToDoItem mToDoItemPrototype;
+    ToDoList mToDoListData = new ToDoList();
 
-	[SerializeField] Transform Content;
+    [SerializeField] Transform Content;
 
-	private void Awake()
-	{
-		mToDoItemPrototype = transform.Find("ToDoItemPrototype").GetComponent<UIToDoItem>();
-	}
-	void Start ()
-	{
+    InputField inputContent;
+
+    private void Awake()
+    {
+        mToDoItemPrototype = transform.Find("ToDoItemPrototype").GetComponent<UIToDoItem>();
+        inputContent = transform.Find("InputContent").GetComponent<InputField>();
+    }
+    void Start ()
+    {
+        inputContent.OnEndEditAsObservable()
+                    .Subscribe(text =>
+                    {
+                        mToDoListData.ToDoItems.Add(new ToDoItem
+                        {
+                            Id = 3,
+                            Content = new StringReactiveProperty(text),
+                            Completed = new BoolReactiveProperty(false)
+                        });
+                        inputContent.text = "";
+                        inputContent.Select();
+                    });
+
+        mToDoListData.ToDoItems.ObserveCountChanged()
+                               .Subscribe(_ =>
+                               {
+                                   OnDataChange();
+                               });
+
         OnDataChange();
     }
 
-	void OnDataChange()
+    void OnDataChange()
     {
         var child = Content.GetComponentsInChildren<UIToDoItem>();
         foreach (var item in child)
@@ -32,7 +53,7 @@ public class UIToDoList : MonoBehaviour {
         {
             if (!item.Completed.Value)
             {
-                item.Completed.Subscribe(complete => 
+                item.Completed.Subscribe(complete =>
                 {
                     if (complete)
                     {
