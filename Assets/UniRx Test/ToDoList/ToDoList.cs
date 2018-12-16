@@ -1,10 +1,13 @@
 ﻿using UniRx;
+using System.Collections.Generic;
+using System;
 
 namespace UniRxLesson
 {
     /// <summary>
     /// 待办事项
     /// </summary>
+    [Serializable]
     public class ToDoItem
     {
         /// <summary>
@@ -24,10 +27,11 @@ namespace UniRxLesson
 
     }
 
+    [Serializable]
     public class ToDoList
     {
 
-        public ReactiveCollection<ToDoItem> ToDoItems = new ReactiveCollection<ToDoItem>()
+        public List<ToDoItem> ToDoItems = new List<ToDoItem>()
         {
             new ToDoItem
             {
@@ -41,7 +45,7 @@ namespace UniRxLesson
                 Content = new StringReactiveProperty("Happy Birthday To Me"),
                 Completed = new BoolReactiveProperty(false)
             }
-        }; 
+        };
     }
 }
 

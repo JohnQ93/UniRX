@@ -10,16 +10,20 @@ public class UIToDoList : MonoBehaviour {
 
     [SerializeField] Transform Content;
 
-    InputField inputContent;
+    InputField mInputContent;
+    Button mAddButton;
 
     private void Awake()
     {
         mToDoItemPrototype = transform.Find("ToDoItemPrototype").GetComponent<UIToDoItem>();
-        inputContent = transform.Find("InputContent").GetComponent<InputField>();
+        mInputContent = transform.Find("InputContent").GetComponent<InputField>();
+        mAddButton = transform.Find("AddButton").GetComponent<Button>();
     }
     void Start ()
     {
-        inputContent.OnEndEditAsObservable()
+        Debug.Log(JsonUtility.ToJson(mToDoListData));
+
+        mInputContent.OnEndEditAsObservable()
                     .Subscribe(text =>
                     {
                         mToDoListData.ToDoItems.Add(new ToDoItem
@@ -28,11 +32,10 @@ public class UIToDoList : MonoBehaviour {
                             Content = new StringReactiveProperty(text),
                             Completed = new BoolReactiveProperty(false)
                         });
-                        inputContent.text = "";
-                        inputContent.Select();
+                        mInputContent.text = string.Empty;
                     });
 
-        mToDoListData.ToDoItems.ObserveCountChanged()
+        mToDoListData.ToDoItems.ObserveEveryValueChanged(items => items.Count)
                                .Subscribe(_ =>
                                {
                                    OnDataChange();
