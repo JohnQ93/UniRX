@@ -1,6 +1,7 @@
 ﻿using UniRx;
 using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 namespace UniRxLesson
 {
@@ -30,6 +31,18 @@ namespace UniRxLesson
     [Serializable]
     public class ToDoList
     {
+        private int mTopId = 2;
+
+        public void Add(string text)
+        {
+            ToDoItems.Add(new ToDoItem()
+            {
+                Id = mTopId,
+                Content = new StringReactiveProperty(text),
+                Completed = new BoolReactiveProperty(false)
+            });
+            mTopId++;
+        }
 
         public List<ToDoItem> ToDoItems = new List<ToDoItem>()
         {
@@ -46,6 +59,24 @@ namespace UniRxLesson
                 Completed = new BoolReactiveProperty(false)
             }
         };
+
+        public void Save()
+        {
+            PlayerPrefs.SetString("model", JsonUtility.ToJson(this));
+        }
+
+        internal static ToDoList Load()
+        {
+            var jsonContent = PlayerPrefs.GetString("model", string.Empty);
+            if (string.IsNullOrEmpty(jsonContent))
+            {
+                return new ToDoList();
+            }
+            else
+            {
+                return JsonUtility.FromJson<ToDoList>(jsonContent);
+            }
+        }
     }
 }
 
