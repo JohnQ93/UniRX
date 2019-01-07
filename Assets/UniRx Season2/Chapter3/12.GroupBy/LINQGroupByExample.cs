@@ -19,7 +19,7 @@ public class LINQGroupByExample : MonoBehaviour {
             new Student{Name = "lalalal",Age = 28},
             new Student{Name = "hahahahah",Age = 18},
             new Student{Name = "superman",Age = 18},
-            new Student{Name = "perfct",Age = 19},
+            new Student{Name = "perfect",Age = 19},
             new Student{Name = "wonderful",Age = 24},
             new Student{Name = "excellent",Age = 24},
             new Student{Name = "lenguage",Age = 28}
