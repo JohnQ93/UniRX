@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class LINQSkipExample : MonoBehaviour {
-
-	// Use this for initialization
+    
 	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+        var grades = new[] { 34, 56, 11, 100, 98, 100, 22 };
+        grades.OrderByDescending(x => x)
+              .Skip(2)
+              .ToList()
+              .ForEach(grade =>
+              {
+                  Debug.Log(grade);
+              });
 	}
 }
