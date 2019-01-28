@@ -11,6 +11,9 @@ public class UniRxAggregateExample : MonoBehaviour {
         subject.Aggregate((max, next) => max > next ? max : next)
                .Subscribe(result => Debug.Log(result));
 
+        subject.Aggregate((sum, next) => sum + next)
+               .Subscribe(result => Debug.Log(result));
+
         subject.OnNext(2);
         subject.OnNext(200);
         subject.OnNext(201);
